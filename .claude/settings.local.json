@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -ExecutionPolicy Bypass -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(git rev-parse --git-dir)",
+      "Bash(npm install)",
+      "Bash(npm install --legacy-peer-deps)",
+      "Bash(npm run dev)",
+      "Bash(taskkill /PID b4f51b4 /F)",
+      "Bash(xargs ls -la)",
+      "Bash(dir \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\api\" /s)",
+      "Bash(cmd /c \"dir \"\"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\api\"\" /s\")",
+      "Bash(powershell \"Get-ChildItem -Path ''C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\api'' -Recurse -File\")",
+      "Bash(findstr README)",
+      "Bash(taskkill /f /im node.exe)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(npx kill-port 3010)",
+      "Bash(timeout 10)",
+      "Bash(npx kill-port 3000)",
+      "Bash(npx next clean)",
+      "Bash(ping -n 10 127.0.0.)",
+      "Bash(npx next build)",
+      "Bash(npx next start)",
+      "Bash(powershell Remove-Item -Recurse -Force .next)",
+      "Bash(dir)",
+      "Bash(timeout 10s)",
+      "Bash(curl -I http://localhost:3001)",
+      "Bash(npm run build)",
+      "Bash(npm run start)"
+    ]
+  }
+}
