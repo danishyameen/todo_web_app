@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
-import Header from '@/components/Header';
-import { apiClient } from '@/lib/api-client';
+import { useAuth } from '../../../lib/auth-context';
+import Header from '../../../components/Header';
+import { apiClient } from '../../../lib/api-client';
 
 export default function CreateTaskPage() {
   const router = useRouter();

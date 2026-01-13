@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import ReviewsCarousel from '@/components/ReviewsCarousel';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import ReviewsCarousel from '../components/ReviewsCarousel';
 
 export default function HomePage() {
   const router = useRouter();

@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
-import Header from '@/components/Header';
+import { useAuth } from '../../lib/auth-context';
+import Header from '../../components/Header';
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth();
