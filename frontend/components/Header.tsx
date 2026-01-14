@@ -18,27 +18,31 @@ export default function Header() {
                 Todo App
               </Link>
             </div>
-            {isAuthenticated && (
-              <nav className="ml-6 flex space-x-8">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/tasks"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                >
-                  Tasks
-                </Link>
-              </nav>
-            )}
+            {/* Desktop navigation - hidden on mobile */}
+            <nav className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
+              {isAuthenticated && (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/tasks"
+                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  >
+                    Tasks
+                  </Link>
+                </>
+              )}
+            </nav>
           </div>
 
-          {isAuthenticated && user && (
-            <div className="flex items-center">
-              <div className="ml-3 relative">
+          {/* Desktop user menu - hidden on mobile */}
+          <div className="hidden md:flex md:items-center md:space-x-4">
+            {isAuthenticated && user && (
+              <div className="relative ml-3">
                 <div className="flex items-center">
                   <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -65,7 +69,10 @@ export default function Header() {
                       Your Profile
                     </Link>
                     <button
-                      onClick={logout}
+                      onClick={() => {
+                        logout();
+                        setIsMenuOpen(false);
+                      }}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Sign out
@@ -73,64 +80,103 @@ export default function Header() {
                   </div>
                 )}
               </div>
-            </div>
-          )}
+            )}
 
-          {!isAuthenticated && (
-            <div className="flex items-center">
-              <Link
-                href="/auth/login"
-                className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth/signup"
-                className="ml-4 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
+            {!isAuthenticated && (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile menu button - shown only on mobile */}
+          <div className="flex items-center md:hidden">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <span className="sr-only">Open main menu</span>
+              {/* Menu icon when closed */}
+              {!isMenuOpen && (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+              {/* Close icon when open */}
+              {isMenuOpen && (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {isAuthenticated && isMenuOpen && (
+      {/* Mobile menu - shown only when menu is open and on mobile */}
+      {isMenuOpen && (
         <div className="md:hidden">
           <div className="pt-2 pb-3 space-y-1">
-            <Link
-              href="/dashboard"
-              className="bg-blue-50 border-blue-500 text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/tasks"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Tasks
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Mobile menu for unauthenticated users */}
-      {!isAuthenticated && (
-        <div className="md:hidden">
-          <div className="pt-2 pb-3 space-y-1">
-            <Link
-              href="/auth/login"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/signup"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Sign Up
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="bg-blue-50 border-blue-500 text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/tasks"
+                  className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Tasks
+                </Link>
+                <Link
+                  href="/profile"
+                  className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Your Profile
+                </Link>
+                <button
+                  onClick={logout}
+                  className="w-full text-left border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

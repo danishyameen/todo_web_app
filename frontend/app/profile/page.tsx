@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+// Vercel deployment fix - using relative paths
 import { useAuth } from '../../lib/auth-context';
 import Header from '../../components/Header';
 import { apiClient } from '../../lib/api-client';

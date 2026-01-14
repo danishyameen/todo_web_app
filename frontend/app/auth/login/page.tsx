@@ -1,15 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/auth-context';
+import Toast from '../../../components/Toast';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error' | 'info' | 'warning'} | null>(null);
   const router = useRouter();
   const { login } = useAuth();
 
@@ -19,11 +21,37 @@ export default function LoginPage() {
     setError('');
 
     try {
+      // Attempt to login
       await login(email, password);
-    } catch (err) {
-      setError('Invalid email or password');
-      setIsLoading(false);
+
+      // If successful login, show success toast and redirect to dashboard
+      setToast({message: 'Successfully signed in!', type: 'success'});
+
+      // Redirect to dashboard after a short delay to show the toast
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1500);
+    } catch (err: any) {
+      if (err.message === 'User not found') {
+        // User doesn't exist, show toast and redirect to signup
+        setToast({message: 'User not registered. Redirecting to sign up...', type: 'warning'});
+
+        // Redirect to signup after showing the toast
+        setTimeout(() => {
+          router.push('/auth/signup');
+        }, 2000);
+      } else {
+        // Other login error (e.g., wrong password)
+        setError(err.message || 'Invalid email or password');
+        setIsLoading(false);
+      }
     }
+  };
+
+
+  // Handle toast close
+  const handleToastClose = () => {
+    setToast(null);
   };
 
   return (
@@ -120,6 +148,15 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+      {toast && (
+        <div className="fixed top-4 right-4">
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={handleToastClose}
+          />
+        </div>
+      )}
     </div>
   );
 }

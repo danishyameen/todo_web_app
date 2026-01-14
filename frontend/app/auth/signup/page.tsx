@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/auth-context';
+import Toast from '../../../components/Toast';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error' | 'info' | 'warning'} | null>(null);
   const router = useRouter();
   const { register } = useAuth();
 
@@ -35,8 +37,20 @@ export default function SignupPage() {
 
     try {
       await register(email, password, name);
-    } catch (err) {
-      setError('An error occurred during signup');
+
+      // Show success toast and redirect to dashboard
+      setToast({message: 'Account created successfully! Redirecting to dashboard...', type: 'success'});
+
+      // Redirect to dashboard after showing the toast
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 2000);
+    } catch (err: any) {
+      if (err.message === 'User already exists') {
+        setError('A user with this email already exists. Please try logging in instead.');
+      } else {
+        setError(err.message || 'An error occurred during signup');
+      }
       setIsLoading(false);
     }
   };
@@ -176,6 +190,15 @@ export default function SignupPage() {
           </p>
         </div>
       </div>
+      {toast && (
+        <div className="fixed top-4 right-4">
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        </div>
+      )}
     </div>
   );
 }

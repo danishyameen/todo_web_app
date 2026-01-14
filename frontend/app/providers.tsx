@@ -1,5 +1,6 @@
 'use client';
 
+// Vercel deployment fix - using relative paths
 import { AuthProvider } from '../lib/auth-context';
 import { ReactNode } from 'react';
 
