@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '../../lib/auth-context';
-import Toast from '../../components/Toast';
+import { useAuth } from '../../../lib/auth-context';
+import Toast from '../../../components/Toast';
 import { motion } from 'framer-motion';
 
 export default function LoginPage() {
