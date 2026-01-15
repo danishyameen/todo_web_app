@@ -66,7 +66,8 @@
       "Bash(del \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\public\\\\taskly-logo.svg\")",
       "Bash(copy \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\img\\\\logo.png\" \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\public\\\\img\\\\logo.png\")",
       "Bash(powershell Copy-Item \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\img\\\\logo.png\" -Destination \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\public\\\\img\\\\logo.png\")",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(git commit -m \"Complete Todo Web App implementation with enhanced UI and animations\n\n- Implemented full-stack Todo application with Next.js frontend and FastAPI backend\n- Enhanced UI for signup, login, dashboard, tasks, and profile pages\n- Added comprehensive animations throughout the application\n- Integrated backend API with frontend using proper data transformation\n- Implemented user authentication and task management features\n- Added consistent logo usage across all pages\n- Fixed various UI/UX issues and improved overall design\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")"
     ]
   }
 }
