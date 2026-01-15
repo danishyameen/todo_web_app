@@ -80,7 +80,10 @@
       "Bash(findstr /s /i \"root\" \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\*.json\")",
       "Bash(find . -name \"*.json\" -exec grep -l \"root\" {} ;)",
       "Bash(findstr -i vercel)",
-      "Bash(git rev-parse master)"
+      "Bash(git rev-parse master)",
+      "Bash(git commit -m \"Fix import path for new task page\n\n- Corrected relative paths in frontend/app/tasks/new/page.tsx\n- Changed from ../../lib/auth-context to ../../../lib/auth-context to properly resolve from tasks/new directory\n- Fixed paths for Header component and apiClient as well\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git pull origin master)",
+      "Bash(git checkout --theirs vercel.json)"
     ]
   }
 }
