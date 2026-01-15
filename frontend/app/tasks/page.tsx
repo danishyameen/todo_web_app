@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '../../lib/auth-context';
 import Header from '../../components/Header';
 import { apiClient } from '../../lib/api-client';
+import { motion } from 'framer-motion';
 
 export default function TasksPage() {
   const { user, token, isAuthenticated } = useAuth();
@@ -23,8 +24,11 @@ export default function TasksPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/auth/signup');
-      return;
+      // Add a small delay to ensure all state updates are processed before redirect
+      const timer = setTimeout(() => {
+        router.push('/');
+      }, 100);
+      return () => clearTimeout(timer);
     }
 
     const fetchTasks = async () => {
@@ -50,8 +54,23 @@ export default function TasksPage() {
     fetchTasks();
   }, [isAuthenticated, token, router]);
 
+  // Always render the component structure to ensure consistent hooks
   if (!isAuthenticated) {
-    return null; // The redirect happens in useEffect
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Access Denied</h2>
+          <p className="text-gray-600 mb-6">Please log in to view your tasks.</p>
+          <Link
+            href="/"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Go to Home
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const handleDeleteAll = async () => {
@@ -158,10 +177,10 @@ export default function TasksPage() {
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Access Denied</h2>
           <p className="text-gray-600 mb-6">Please log in to view your tasks.</p>
           <Link
-            href="/auth/login"
+            href="/"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Log In
+            Go to Home
           </Link>
         </div>
       </div>
@@ -169,196 +188,255 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        {error && (
-          <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Filters */}
-        <div className="bg-white shadow rounded-lg p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 mb-1">
-                Status
-              </label>
-              <select
-                id="status-filter"
-                value={filters.status}
-                onChange={(e) => handleFilterChange('status', e.target.value)}
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-              >
-                <option value="all">All Statuses</option>
-                <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="priority-filter" className="block text-sm font-medium text-gray-700 mb-1">
-                Priority
-              </label>
-              <select
-                id="priority-filter"
-                value={filters.priority}
-                onChange={(e) => handleFilterChange('priority', e.target.value)}
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-              >
-                <option value="all">All Priorities</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
-            </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
-                Search
-              </label>
-              <input
-                type="text"
-                id="search"
-                placeholder="Search tasks..."
-                value={filters.search}
-                onChange={(e) => handleFilterChange('search', e.target.value)}
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-              />
-            </div>
-          </div>
-
-          {/* Delete All Button */}
-          {tasks.length > 0 && (
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={handleDeleteAll}
-                disabled={deletingAll}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
-              >
-                {deletingAll ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Deleting All...
-                  </span>
-                ) : (
-                  'Delete All Tasks'
-                )}
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Tasks List */}
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div className="px-4 py-5 border-b border-gray-200 sm:px-6 flex justify-between items-center">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Tasks</h3>
-            <Link
-              href="/tasks/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mb-4 bg-red-50 border-l-4 border-red-400 p-4 rounded-lg"
             >
-              Add New Task
-            </Link>
-          </div>
-          <ul className="divide-y divide-gray-200">
-            {filteredTasks.length === 0 ? (
-              <li className="px-4 py-12 text-center">
-                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No tasks</h3>
-                <p className="mt-1 text-sm text-gray-500">Get started by creating a new task.</p>
-                <div className="mt-6">
-                  <Link
-                    href="/tasks/new"
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Create new task
-                  </Link>
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
                 </div>
-              </li>
-            ) : (
-              filteredTasks.map((task) => (
-                <li key={task.id || task._id}>
-                  <Link href={`/tasks/${task.id || task._id}`} className="block hover:bg-gray-50">
-                    <div className="px-4 py-4 sm:px-6">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-blue-600 truncate">{task.title}</p>
-                        <div className="ml-2 flex-shrink-0 flex">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(task.status)}`}>
-                            {task.status?.replace('-', ' ')}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-2 flex justify-between">
-                        <div className="sm:flex">
-                          <div className="mr-6 flex items-center text-sm text-gray-500">
-                            <svg className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                            </svg>
-                            {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
-                          </div>
-                          <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                            <span className={`inline-block w-3 h-3 rounded-full mr-1 ${getPriorityColor(task.priority)}`}></span>
-                            {task.priority?.charAt(0).toUpperCase() + task.priority?.slice(1) || 'None'} priority
-                          </div>
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {task.category || 'Uncategorized'}
-                        </div>
-                      </div>
-                      {task.description && (
-                        <div className="mt-2 text-sm text-gray-700">
-                          <p className="truncate">{task.description}</p>
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
+                <div className="ml-3">
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Pagination */}
-        {filteredTasks.length > 0 && (
-          <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-6 rounded-b-lg">
-            <div className="hidden sm:block">
-              <p className="text-sm text-gray-700">
-                Showing <span className="font-medium">1</span> to <span className="font-medium">{Math.min(filteredTasks.length, 10)}</span> of{' '}
-                <span className="font-medium">{filteredTasks.length}</span> results
-              </p>
+          {/* Filters */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-white shadow-xl rounded-2xl p-6 mb-6 border border-gray-200"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
+                <select
+                  id="status-filter"
+                  value={filters.status}
+                  onChange={(e) => handleFilterChange('status', e.target.value)}
+                  className="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg transition duration-200"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="priority-filter" className="block text-sm font-medium text-gray-700 mb-2">
+                  Priority
+                </label>
+                <select
+                  id="priority-filter"
+                  value={filters.priority}
+                  onChange={(e) => handleFilterChange('priority', e.target.value)}
+                  className="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg transition duration-200"
+                >
+                  <option value="all">All Priorities</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+                  Search
+                </label>
+                <input
+                  type="text"
+                  id="search"
+                  placeholder="Search tasks..."
+                  value={filters.search}
+                  onChange={(e) => handleFilterChange('search', e.target.value)}
+                  className="block w-full pl-4 pr-10 py-3 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg transition duration-200"
+                />
+              </div>
             </div>
-            <div className="flex-1 flex justify-between sm:justify-end">
-              <button
-                disabled
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+
+            {/* Delete All Button */}
+            {tasks.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                className="mt-6 flex justify-end"
               >
-                Previous
-              </button>
-              <button
-                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                <button
+                  onClick={handleDeleteAll}
+                  disabled={deletingAll}
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition-all duration-200"
+                >
+                  {deletingAll ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Deleting All...
+                    </span>
+                  ) : (
+                    'Delete All Tasks'
+                  )}
+                </button>
+              </motion.div>
+            )}
+          </motion.div>
+
+          {/* Tasks List */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-white shadow-xl rounded-2xl overflow-hidden"
+          >
+            <div className="px-6 py-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 sm:px-8 flex justify-between items-center">
+              <div className="flex items-center">
+                <img
+                  src="/img/logo.png"
+                  alt="Taskly Logo"
+                  className="h-10 w-auto object-contain mr-4"
+                  onError={(e) => {
+                    // Fallback to text if image fails to load
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent) {
+                      const textNode = document.createElement('h3');
+                      textNode.className = 'text-xl leading-6 font-bold text-blue-600';
+                      textNode.textContent = 'Taskly';
+                      parent.appendChild(textNode);
+                    }
+                  }}
+                />
+                <h3 className="text-xl font-bold text-gray-900">Tasks</h3>
+              </div>
+              <Link
+                href="/tasks/new"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
               >
-                Next
-              </button>
+                Add New Task
+              </Link>
             </div>
-          </nav>
-        )}
+            <ul className="divide-y divide-gray-200">
+              {filteredTasks.length === 0 ? (
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="px-6 py-16 text-center"
+                >
+                  <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  <h3 className="mt-4 text-lg font-medium text-gray-900">No tasks</h3>
+                  <p className="mt-2 text-sm text-gray-500">Get started by creating a new task.</p>
+                  <div className="mt-6">
+                    <Link
+                      href="/tasks/new"
+                      className="inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                    >
+                      Create new task
+                    </Link>
+                  </div>
+                </motion.li>
+              ) : (
+                filteredTasks.map((task, index) => (
+                  <motion.li
+                    key={task.id || task._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 * index }}
+                  >
+                    <Link href={`/tasks/${task.id || task._id}`} className="block hover:bg-blue-50 transition-colors duration-200">
+                      <div className="px-6 py-6 sm:px-8">
+                        <div className="flex items-center justify-between">
+                          <p className="text-base font-semibold text-blue-700 truncate">{task.title}</p>
+                          <div className="ml-2 flex-shrink-0 flex">
+                            <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${getStatusColor(task.status)}`}>
+                              {task.status?.replace('-', ' ')}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mt-3 flex justify-between">
+                          <div className="sm:flex">
+                            <div className="mr-6 flex items-center text-sm text-gray-600">
+                              <svg className="flex-shrink-0 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                              </svg>
+                              {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
+                            </div>
+                            <div className="mt-2 flex items-center text-sm text-gray-600 sm:mt-0">
+                              <span className={`inline-block w-3 h-3 rounded-full mr-2 ${getPriorityColor(task.priority)}`}></span>
+                              {task.priority?.charAt(0).toUpperCase() + task.priority?.slice(1) || 'None'} priority
+                            </div>
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {task.category || 'Uncategorized'}
+                          </div>
+                        </div>
+                        {task.description && (
+                          <div className="mt-3 text-sm text-gray-700">
+                            <p className="truncate">{task.description}</p>
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  </motion.li>
+                ))
+              )}
+            </ul>
+          </motion.div>
+
+          {/* Pagination */}
+          {filteredTasks.length > 0 && (
+            <motion.nav
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="bg-white px-6 py-4 flex items-center justify-between border-t border-gray-200 sm:px-8 mt-6 rounded-b-xl"
+            >
+              <div className="hidden sm:block">
+                <p className="text-sm text-gray-700">
+                  Showing <span className="font-medium">1</span> to <span className="font-medium">{Math.min(filteredTasks.length, 10)}</span> of{' '}
+                  <span className="font-medium">{filteredTasks.length}</span> results
+                </p>
+              </div>
+              <div className="flex-1 flex justify-between sm:justify-end">
+                <button
+                  disabled
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors duration-200"
+                >
+                  Previous
+                </button>
+                <button
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200"
+                >
+                  Next
+                </button>
+              </div>
+            </motion.nav>
+          )}
+        </motion.div>
       </main>
     </div>
   );

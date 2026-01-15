@@ -52,7 +52,21 @@
       "Bash(git add frontend/components/Toast.tsx frontend/app/auth/login/page.tsx frontend/app/auth/signup/page.tsx frontend/components/Header.tsx frontend/app/profile/page.tsx frontend/app/providers.tsx frontend/lib/api-client.ts)",
       "Bash(git add -A)",
       "Bash(git rm --cached tmpclaude-* frontend/tmpclaude-*)",
-      "Bash(git reset frontend/tmpclaude-* tmpclaude-*)"
+      "Bash(git reset frontend/tmpclaude-* tmpclaude-*)",
+      "Bash(git commit -m \"Add authentication flow with toast notifications and responsive design improvements\n\n- Implement email validation to check if user exists before sign in\n- Add toast notifications for successful sign in and registration\n- Improve responsive design for mobile devices\n- Enhance header navigation with mobile menu\n- Update API client with proper user existence checks\n- Create reusable Toast component\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git push origin master)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(dir backend)",
+      "Bash(python start_server.py)",
+      "Bash(dir backendsrcdb)",
+      "Bash(dir:*)",
+      "Bash(findstr \"\\\\.env\")",
+      "Bash(ls -la backend/.env*)",
+      "Bash(npm install framer-motion)",
+      "Bash(del \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\public\\\\taskly-logo.svg\")",
+      "Bash(copy \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\img\\\\logo.png\" \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\public\\\\img\\\\logo.png\")",
+      "Bash(powershell Copy-Item \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\app\\\\img\\\\logo.png\" -Destination \"C:\\\\Users\\\\Evantagers\\\\Desktop\\\\todo_web_app\\\\frontend\\\\public\\\\img\\\\logo.png\")",
+      "Bash(git init:*)"
     ]
   }
 }

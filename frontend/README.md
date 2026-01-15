@@ -1,6 +1,6 @@
-# Todo App Frontend
+# Taskly Frontend
 
-This is the frontend for the Todo Full-Stack Web Application built with Next.js 14, TypeScript, and Tailwind CSS.
+This is the frontend for the Taskly Full-Stack Web Application built with Next.js 14, TypeScript, and Tailwind CSS.
 
 ## Features
 

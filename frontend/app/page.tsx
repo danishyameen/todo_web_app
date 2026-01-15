@@ -6,14 +6,15 @@ import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ReviewsCarousel from '../components/ReviewsCarousel';
+import { motion } from 'framer-motion';
 
 export default function HomePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('token');
+    // Check if user is authenticated by looking for authToken in localStorage
+    const token = localStorage.getItem('authToken');
     if (token) {
       // User is authenticated, redirect to dashboard
       router.push('/dashboard');
@@ -36,16 +37,38 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16 flex-grow">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="container mx-auto px-4 py-16 flex-grow"
+      >
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Manage Your Tasks Effortlessly
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+          <motion.div
+            className="flex flex-col items-center mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 text-center">
+              Manage Your Tasks with <span className="text-blue-600 font-bold">Task</span><span className="text-yellow-500 font-bold">ly</span>
+            </h1>
+          </motion.div>
+          <motion.p
+            className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             A modern, intuitive task management application that helps you stay organized and productive.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+          <motion.div
+            className="flex flex-col sm:flex-row justify-center gap-4 mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
             <Link
               href="/auth/login"
               className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg"
@@ -58,9 +81,9 @@ export default function HomePage() {
             >
               Get Started
             </Link>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Features Section */}
       <div className="py-16 bg-white">
@@ -135,34 +158,86 @@ export default function HomePage() {
       </div>
 
       {/* Stats Section */}
-      <div className="py-16 bg-gradient-to-r from-blue-600 to-indigo-700">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="py-16 bg-gradient-to-r from-blue-600 to-indigo-700"
+      >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex flex-col items-center"
+            >
               <div className="text-4xl md:text-5xl font-bold mb-2">10K+</div>
               <div className="text-lg opacity-90">Active Users</div>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex flex-col items-center"
+            >
               <div className="text-4xl md:text-5xl font-bold mb-2">500K+</div>
               <div className="text-lg opacity-90">Tasks Completed</div>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col items-center"
+            >
               <div className="text-4xl md:text-5xl font-bold mb-2">99.9%</div>
               <div className="text-lg opacity-90">Uptime</div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Testimonials Section */}
       <ReviewsCarousel />
 
       {/* CTA Section */}
-      <div className="py-16 bg-white">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="py-16 bg-white"
+      >
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Ready to Transform Your Productivity?</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Join thousands of users who have already improved their task management workflow.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Ready to Transform Your Productivity?
+          </motion.h2>
+          <motion.p
+            className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Join thousands of users who have already improved their task management workflow.
+          </motion.p>
+          <motion.div
+            className="flex flex-col sm:flex-row justify-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <Link
               href="/auth/signup"
               className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg"
@@ -175,9 +250,9 @@ export default function HomePage() {
             >
               Sign In
             </Link>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer />
     </div>

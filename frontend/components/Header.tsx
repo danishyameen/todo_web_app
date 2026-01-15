@@ -11,11 +11,26 @@ export default function Header() {
   return (
     <header className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-24">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href={isAuthenticated ? "/dashboard" : "/"} className="text-xl font-bold text-blue-600">
-                Todo App
+              <Link href={isAuthenticated ? "/dashboard" : "/"} className="flex items-center">
+                <img
+                  src="/img/logo.png"
+                  alt="Taskly Logo"
+                  className="h-24 w-auto object-contain"
+                  onError={(e) => {
+                    // Fallback to text if image fails to load
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent) {
+                      const textNode = document.createElement('span');
+                      textNode.className = 'text-xl font-bold text-blue-600';
+                      textNode.textContent = 'Taskly';
+                      parent.appendChild(textNode);
+                    }
+                  }}
+                />
               </Link>
             </div>
             {/* Desktop navigation - hidden on mobile */}

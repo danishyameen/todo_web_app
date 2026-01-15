@@ -7,8 +7,8 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Todo App',
-  description: 'A modern task management application',
+  title: 'Taskly',
+  description: 'Taskly - A modern task management application',
 };
 
 export default function RootLayout({

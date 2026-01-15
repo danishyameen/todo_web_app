@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40">
+  <!-- Background rectangle -->
+  <rect width="100" height="40" rx="8" fill="#3B82F6"/>
+
+  <!-- Letter T -->
+  <path d="M12 8 L12 12 L22 12 L22 14 L12 14 L12 32 L10 32 L10 8 Z" fill="white"/>
+
+  <!-- Letter A -->
+  <path d="M26 8 L28 8 L34 22 L34 8 L36 8 L36 32 L34 32 L34 24 L28 32 L26 32 L30 26 L26 14 Z" fill="white"/>
+
+  <!-- Letter S -->
+  <path d="M42 8 L50 8 C54 8 56 10 56 14 C56 16 55 18 53 19 L54 20 C56 19 57 17 57 14 C57 9 54 8 50 8 L42 8 Z M42 32 L50 32 C54 32 56 30 56 26 C56 24 55 22 53 21 L54 20 C56 21 57 23 57 26 C57 31 54 32 50 32 L42 32 Z" fill="white"/>
+
+  <!-- Letter K -->
+  <path d="M62 8 L64 8 L64 18 L72 8 L74 8 L68 18 L74 32 L72 32 L64 20 L64 32 L62 32 Z" fill="white"/>
+
+  <!-- Letter L -->
+  <path d="M78 8 L80 8 L80 28 L88 28 L88 30 L80 30 L80 32 L78 32 Z" fill="white"/>
+
+  <!-- Letter Y -->
+  <path d="M92 8 L94 8 L98 16 L98 8 L100 8 L100 32 L98 32 L98 19 L94 32 L92 32 Z" fill="white"/>
+</svg>
