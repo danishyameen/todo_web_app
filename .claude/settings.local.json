@@ -83,7 +83,13 @@
       "Bash(git rev-parse master)",
       "Bash(git commit -m \"Fix import path for new task page\n\n- Corrected relative paths in frontend/app/tasks/new/page.tsx\n- Changed from ../../lib/auth-context to ../../../lib/auth-context to properly resolve from tasks/new directory\n- Fixed paths for Header component and apiClient as well\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
       "Bash(git pull origin master)",
-      "Bash(git checkout --theirs vercel.json)"
+      "Bash(git checkout --theirs vercel.json)",
+      "Bash(git commit -m \"Resolve merge conflict and remove problematic vercel.json\")",
+      "Bash(pip install -r requirements.txt)",
+      "Bash(pip install psycopg2-binary)",
+      "Bash(pip install fastapi==0.104.1 uvicorn[standard]==0.24.0 sqlmodel==0.0.16 alembic==1.13.1 python-jose[cryptography]==3.3.0 passlib[bcrypt]==1.7.4 python-multipart==0.0.6 python-dotenv==1.0.0 pydantic-settings==2.1.0 pytest==7.4.3 httpx==0.25.2 Faker==22.6.0 psutil==5.9.5)",
+      "Bash(python seed_db.py)",
+      "Bash(python -c \"from src.models.user import User; print\\(''User model imported successfully''\\)\")"
     ]
   }
 }
