@@ -15,7 +15,7 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} Taskly. All rights reserved.
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Made and Designed by Danish Yameen
+              Developed by Danish Yameen
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex justify-center space-x-6">

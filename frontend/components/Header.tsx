@@ -33,8 +33,9 @@ export default function Header() {
                 />
               </Link>
               <p className="text-xs text-gray-500 mt-1">
-                Made by Danish Yameen
+                Created by Danish Yameen
               </p>
+            </div>
             </div>
             {/* Desktop navigation - hidden on mobile */}
             <nav className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
