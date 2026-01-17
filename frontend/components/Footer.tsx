@@ -10,9 +10,12 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="md:flex md:items-center md:justify-between">
-          <div className="flex justify-center md:justify-start">
+          <div className="flex flex-col items-center md:items-start">
             <p className="text-sm text-gray-500">
               &copy; {new Date().getFullYear()} Taskly. All rights reserved.
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              Made and Designed by Danish Yameen
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex justify-center space-x-6">

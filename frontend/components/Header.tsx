@@ -13,7 +13,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24">
           <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
+            <div className="flex-shrink-0 flex flex-col items-center">
               <Link href={isAuthenticated ? "/dashboard" : "/"} className="flex items-center">
                 <img
                   src="/img/logo.png"
@@ -32,6 +32,9 @@ export default function Header() {
                   }}
                 />
               </Link>
+              <p className="text-xs text-gray-500 mt-1">
+                Made by Danish Yameen
+              </p>
             </div>
             {/* Desktop navigation - hidden on mobile */}
             <nav className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
