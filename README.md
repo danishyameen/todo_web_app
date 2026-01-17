@@ -1,5 +1,7 @@
 # Todo Web Application
 
+Made and Designed by Danish Yameen
+
 A full-stack todo management application built with Next.js 14, TypeScript, Tailwind CSS for the frontend, and FastAPI, SQLModel, and PostgreSQL for the backend. This application provides a complete solution for managing tasks with authentication, categorization, and advanced filtering capabilities.
 
 ## 🌟 Features
@@ -235,5 +237,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you encounter any issues or have questions, please open an issue in the repository or contact the maintainers.
 
 ---
+
+Made and Designed by Danish Yameen
 
 Built with ❤️ using Next.js, FastAPI, and PostgreSQL.
